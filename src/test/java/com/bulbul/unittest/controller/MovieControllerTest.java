@@ -62,7 +62,7 @@ class MovieControllerTest {
 
 
     @Test
-    void create() throws Exception {
+    void shouldCreateMovie() throws Exception {
         when(movieService.save(any(Movie.class))).thenReturn(avatarMovie);
 
         this.mockMvc.perform(post("/movies")
@@ -76,18 +76,48 @@ class MovieControllerTest {
     }
 
     @Test
-    void read() {
+    void shouldReadAllMovies() throws Exception{
+        List<Movie> movies = new ArrayList<>();
+        movies.add(avatarMovie);
+        movies.add(titanicMovie);
+
+        when(movieService.getAllMovies()).thenReturn(movies);
+
+        this.mockMvc.perform(get("/movies"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.size()", is(movies.size())));
     }
 
     @Test
-    void testRead() {
+    void shouldReadMovieById() throws Exception{
+        when(movieService.getMovieById(anyLong())).thenReturn(avatarMovie);
+
+        this.mockMvc.perform(get("/movies/{id}",1L))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id", is(avatarMovie.getId().intValue())))
+                .andExpect(jsonPath("$.name", is(avatarMovie.getName())))
+                .andExpect(jsonPath("$.genera", is(avatarMovie.getGenera())))
+                .andExpect(jsonPath("$.releaseDate", is(avatarMovie.getReleaseDate().toString())));
     }
 
     @Test
-    void delete() {
+    void shouldDeleteMovieById() throws Exception{
+        doNothing().when(movieService).deleteMovie(anyLong());
+
+        this.mockMvc.perform(delete("/movies/{id}",1L))
+                .andExpect(status().isNoContent());
     }
 
     @Test
-    void update() {
+    void update() throws Exception{
+        when(movieService.updateMovie(any(Movie.class),anyLong())).thenReturn(avatarMovie);
+
+        this.mockMvc.perform(put("/movies/{id}",1L)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(avatarMovie)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id", is(avatarMovie.getId().intValue())))
+                .andExpect(jsonPath("$.name", is(avatarMovie.getName())))
+                .andExpect(jsonPath("$.genera", is(avatarMovie.getGenera())));
     }
 }
