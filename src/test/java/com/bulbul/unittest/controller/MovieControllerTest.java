@@ -45,8 +45,11 @@ class MovieControllerTest {
     private Movie titanicMovie;
 
 
+
+
     @BeforeEach
     void init() {
+
         avatarMovie = new Movie();
         avatarMovie.setId(1L);
         avatarMovie.setName("Avatar");
