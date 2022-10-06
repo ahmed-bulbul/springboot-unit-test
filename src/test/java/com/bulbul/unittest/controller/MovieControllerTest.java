@@ -61,7 +61,6 @@ class MovieControllerTest {
         titanicMovie.setReleaseDate(LocalDate.of(1997, Month.DECEMBER, 19));
     }
 
-
     @Test
     void shouldCreateMovie() throws Exception {
         when(movieService.save(any(Movie.class))).thenReturn(avatarMovie);
