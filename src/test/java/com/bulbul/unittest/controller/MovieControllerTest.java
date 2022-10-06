@@ -1,5 +1,4 @@
 package com.bulbul.unittest.controller;
-
 import com.bulbul.unittest.model.Movie;
 import com.bulbul.unittest.service.MovieService;
 import static org.hamcrest.CoreMatchers.is;
@@ -28,8 +27,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-@WebMvcTest
+@WebMvcTest(value = MovieController.class)
 class MovieControllerTest {
 
     @Autowired
